@@ -1,10 +1,10 @@
 
 import json
-from channels.generic.websocket import AsyncWebSockerConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 # Импорт базового класса для асинхронного WebSocket-чата
 
 # Создаем класс чат-комнаты (наследуемся от базового класса)
-class ChatRoomConsumer(AsyncWebSocketConsumer):
+class ChatRoomConsumer(AsyncWebsocketConsumer):
     # Метод, который срабатывает при подключении нового пользователя
     async def connect(self):
         # 1. Достаем название комнаты из URL (например, из ws/chat/lobby/)
@@ -19,6 +19,8 @@ class ChatRoomConsumer(AsyncWebSocketConsumer):
             self.room_group_name,  # Имя группы (chat_lobby)
             self.channel_name # Уникальный ID этого соединения
         )
+
+        await self.accept()
 
         await self.channel_layer.group_send(
             self.room_group_name,
